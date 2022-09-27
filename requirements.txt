@@ -1,0 +1,9 @@
+easyocr==1.6.2
+matplotlib==3.6.0
+numpy==1.23.3
+opencv-python==4.6.0.66
+pandas==1.5.0
+Pillow==9.2.0
+PyYAML==6.0
+torch==1.12.1
+tqdm==4.64.1

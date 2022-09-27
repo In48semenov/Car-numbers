@@ -1,0 +1,7 @@
+detect_model:
+  path_yolo: './src/weights/detect/yolov5s_best.pt'
+  path_mtcnn: ''
+ocr_model:
+  path_easy: ''
+  path_easy_custom: ''
+  path_lpr_custom: ''

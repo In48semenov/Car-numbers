@@ -1,0 +1,10 @@
+path: ../data
+train: train.txt
+val: val.txt  
+test: test.txt
+
+nc: 1
+
+# Classes
+names:
+  0: number

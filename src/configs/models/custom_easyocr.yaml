@@ -1,0 +1,6 @@
+lang_list:
+  - 'en'
+'recog_network': 'EasyOCR_custom'
+'user_network_directory': './src/models/'
+'model_storage_directory': './src/weights/ocr/'
+'detector': False

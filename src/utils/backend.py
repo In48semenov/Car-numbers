@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
 from src.utils.detection_predict import YoloInference, MTCCNInference
-from src.utils.ocr_predict import EasyOCRModel
+from src.utils.ocr_predict import EasyOCRModel, EasyOCRCustom
 
 
 class Inference:
@@ -23,7 +23,7 @@ class Inference:
         if ocr_model == 'EasyOCR':
             self.ocr_model = EasyOCRModel()
         elif ocr_model == 'EasyOCR_custom':
-            pass
+            self.ocr_model = EasyOCRCustom()
         else:
             pass
 

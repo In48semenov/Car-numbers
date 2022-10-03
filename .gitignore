@@ -1,4 +1,5 @@
-/.idea
-/.venv
-/.ipynb_checkpoints
-/notebooks/.ipynb_checkpoints
+.idea/
+.venv/
+.ipynb_checkpoints*/
+__pycache__*/
+Checker.ipynb

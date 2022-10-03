@@ -1,7 +1,7 @@
 import torch
 import yaml
 
-with open('./src//configs/inference.yaml') as file:
+with open('./src/configs/inference.yaml') as file:
     detect_model_path = yaml.safe_load(file)['detect_model']
 
 

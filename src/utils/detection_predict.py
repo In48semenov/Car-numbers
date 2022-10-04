@@ -32,13 +32,13 @@ class YoloInference:
 class FasterRCNNInference:
 
     def __init__(self):
-        self.model = torch.load(detect_model_path['path_frcnn'])
+        self.model = torch.load(detect_model_path['path_frcnn'], map_location='cpu')
         self.model.eval()
 
     @torch.no_grad()
     def __call__(self, img: Image):
         img_tensor = transforms.ToTensor()(np.array(img))
-        predict = self.model([img_tensor])
+        predict = self.model([img_tensor.to('cpu')])
         if len(predict[0]['boxes'].cpu().detach().numpy()) > 0:
             predict = predict.sort(key=lambda dictionary: dictionary['score'])
             predict = predict[0]['boxes'].cpu().detach().numpy()[0]

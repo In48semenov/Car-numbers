@@ -137,7 +137,7 @@ class MtcnnNet:
             )
             self.onet.eval()
 
-    def predict(self, image, mini_lp_size):
+    def predict(self, image, mini_lp_size=(50, 15)):
         bboxes = np.array([])
         if self.pnet is not None:
             bboxes = self.detect_pnet(image, mini_lp_size)

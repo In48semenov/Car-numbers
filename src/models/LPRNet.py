@@ -61,7 +61,10 @@ class LPRNet(nn.Module):
             ),
             # nn.BatchNorm2d(num_features=self.class_num),
             # nn.ReLU(),
-            # nn.Conv2d(in_channels=self.class_num, out_channels=self.lpr_max_len+1, kernel_size=3, stride=2),
+            # nn.Conv2d(in_channels=self.class_num,
+            #           out_channels=self.lpr_max_len+1,
+            #           kernel_size=3,
+            #           stride=2),
             # nn.ReLU(),
         )
 

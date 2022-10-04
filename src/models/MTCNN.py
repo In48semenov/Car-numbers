@@ -1,5 +1,6 @@
 import cv2
 
+import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -252,8 +253,8 @@ class MtcnnNet:
         for i in range(num_boxes):
             img_box = np.zeros((h[i], w[i], 3))
 
-            img_box[dy[i] : (edy[i] + 1), dx[i] : (edx[i] + 1), :] = image[
-                y[i] : (ey[i] + 1), x[i] : (ex[i] + 1), :
+            img_box[dy[i]: (edy[i] + 1), dx[i]: (edx[i] + 1), :] = image[
+                y[i]: (ey[i] + 1), x[i]: (ex[i] + 1), :
             ]
 
             # resize

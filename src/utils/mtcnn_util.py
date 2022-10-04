@@ -8,14 +8,15 @@ def preprocess(img):
     Returns:
         a float numpy array of shape [1, c, h, w].
     """
-    img = img[:,:,::-1]
-    img = np.asarray(img, 'float32')
+    img = img[:, :, ::-1]
+    img = np.asarray(img, "float32")
     img = img.transpose((2, 0, 1))
     img = np.expand_dims(img, 0)
-    img = (img - 127.5)*0.0078125
+    img = (img - 127.5) * 0.0078125
     return img
 
-def nms(boxes, overlap_threshold=0.5, mode='union'):
+
+def nms(boxes, overlap_threshold=0.5, mode="union"):
     """Non-maximum suppression.
     Arguments:
         boxes: a float numpy array of shape [n, 5],
@@ -36,7 +37,7 @@ def nms(boxes, overlap_threshold=0.5, mode='union'):
     # grab the coordinates of the bounding boxes
     x1, y1, x2, y2, score = [boxes[:, i] for i in range(5)]
 
-    area = (x2 - x1 + 1.0)*(y2 - y1 + 1.0)
+    area = (x2 - x1 + 1.0) * (y2 - y1 + 1.0)
     ids = np.argsort(score)  # in increasing order
 
     while len(ids) > 0:
@@ -64,19 +65,19 @@ def nms(boxes, overlap_threshold=0.5, mode='union'):
 
         # intersections' areas
         inter = w * h
-        if mode == 'min':
-            overlap = inter/np.minimum(area[i], area[ids[:last]])
-        elif mode == 'union':
+        if mode == "min":
+            overlap = inter / np.minimum(area[i], area[ids[:last]])
+        elif mode == "union":
             # intersection over union (IoU)
-            overlap = inter/(area[i] + area[ids[:last]] - inter)
+            overlap = inter / (area[i] + area[ids[:last]] - inter)
 
         # delete all boxes where overlap is too big
         ids = np.delete(
-            ids,
-            np.concatenate([[last], np.where(overlap > overlap_threshold)[0]])
+            ids, np.concatenate([[last], np.where(overlap > overlap_threshold)[0]])
         )
 
     return pick
+
 
 def calibrate_box(bboxes, offsets):
     """Transform bounding boxes to be more like true bounding boxes.
@@ -104,9 +105,10 @@ def calibrate_box(bboxes, offsets):
     # are offsets always such that
     # x1 < x2 and y1 < y2 ?
 
-    translation = np.hstack([w, h, w, h])*offsets
+    translation = np.hstack([w, h, w, h]) * offsets
     bboxes[:, 0:4] = bboxes[:, 0:4] + translation
     return bboxes
+
 
 def correct_bboxes(bboxes, width, height):
     """Crop boxes that are too big and get coordinates
@@ -128,8 +130,8 @@ def correct_bboxes(bboxes, width, height):
     """
 
     x1, y1, x2, y2 = [bboxes[:, i] for i in range(4)]
-    x2,y2 = np.clip(x2, x1, None), np.clip(y2, y1, None)
-    w, h = x2 - x1 + 1.0,  y2 - y1 + 1.0
+    x2, y2 = np.clip(x2, x1, None), np.clip(y2, y1, None)
+    w, h = x2 - x1 + 1.0, y2 - y1 + 1.0
     num_boxes = bboxes.shape[0]
 
     # 'e' stands for end
@@ -165,6 +167,6 @@ def correct_bboxes(bboxes, width, height):
     y[ind] = 0.0
 
     return_list = [dy, edy, dx, edx, y, ey, x, ex, w, h]
-    return_list = [i.astype('int32') for i in return_list]
+    return_list = [i.astype("int32") for i in return_list]
 
     return return_list

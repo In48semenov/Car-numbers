@@ -7,25 +7,28 @@ from .ocr import EasyOCRModel, EasyOCRCustom
 
 
 class Inference:
-
-    def __init__(self, detect_model: str = 'yolo', ocr_model: str = 'EasyOCR', type_inf: str = 'demonstration'):
+    def __init__(
+        self,
+        detect_model: str = "yolo",
+        ocr_model: str = "EasyOCR",
+        type_inf: str = "demonstration",
+    ):
         """
-            detect_model (str): yolo / frcnn / mtcnn
-            ocr_model (str): EasyOCR / EasyOCR_custom / lpr_custom
-            type_inf (str): demonstration / production
+        detect_model (str): yolo / frcnn / mtcnn
+        ocr_model (str): EasyOCR / EasyOCR_custom / lpr_custom
+        type_inf (str): demonstration / production
         """
 
-        if detect_model == 'yolo':
+        if detect_model == "yolo":
             self.detect_model = YoloInference()
-        elif detect_model == 'frcnn':
+        elif detect_model == "frcnn":
             self.detect_model = FasterRCNNInference()
         else:
             self.detect_model = MTCCNInference()
 
-
-        if ocr_model == 'EasyOCR':
+        if ocr_model == "EasyOCR":
             self.ocr_model = EasyOCRModel()
-        elif ocr_model == 'EasyOCR_custom':
+        elif ocr_model == "EasyOCR_custom":
             self.ocr_model = EasyOCRCustom()
         else:
             pass
@@ -41,7 +44,7 @@ class Inference:
         return np.asarray(image.crop((self.xmin, self.ymin, self.xmax, self.ymax)))
 
     def _demonstration(self, image: Image, text: str) -> Image:
-        myFont = ImageFont.truetype('FreeMono.ttf', 30)
+        myFont = ImageFont.truetype("FreeMono.ttf", 30)
         draw = ImageDraw.Draw(image)
 
         draw.line((self.xmin, self.ymin, self.xmax, self.ymin), fill=128, width=4)
@@ -50,11 +53,11 @@ class Inference:
         draw.line((self.xmin, self.ymax, self.xmin, self.ymin), fill=128, width=4)
         draw.text((self.xmin, self.ymax), text, fill=(255, 128, 0), font=myFont)
 
-        return {'image': image, 'text_recognition': text}
+        return {"image": image, "text_recognition": text}
 
     def __call__(self, path_to_image: str):
         """
-            path_to_image (str): path to image
+        path_to_image (str): path to image
         """
         image_orig = Image.open(path_to_image)
 
@@ -64,24 +67,24 @@ class Inference:
             try:
                 img_number = self._get_number(image_orig, detect_results)
             except Exception:
-                return 'Не удалось найти номер автомобиля.'
+                return "Не удалось найти номер автомобиля."
 
             try:
                 text_recognition = self.ocr_model(img_number)
 
-                if self.type_inf == 'demonstration':
+                if self.type_inf == "demonstration":
                     if text_recognition is None:
-                        text_recognition = 'Не считано.'
+                        text_recognition = "Не считано."
 
                     return self._demonstration(image_orig, text_recognition)
                 else:
                     if text_recognition is not None:
                         return text_recognition
                     else:
-                        return 'Не удалось считать номер автомобиля.'
+                        return "Не удалось считать номер автомобиля."
 
             except Exception:
-                return 'Не удалось найти номер автомобиля.'
+                return "Не удалось найти номер автомобиля."
 
         else:
-            return 'Не удалось найти номер автомобиля.'
+            return "Не удалось найти номер автомобиля."

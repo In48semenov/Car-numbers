@@ -39,10 +39,11 @@ class FasterRCNNInference:
     def __call__(self, img: Image):
         img_tensor = transforms.ToTensor()(np.array(img))
         predict = self.model([img_tensor])
-        if len(predict['boxes'].cpu().detach().numpy()) > 0:
+        if len(predict[0]['boxes'].cpu().detach().numpy()) > 0:
             predict = predict.sort(key=lambda dictionary: dictionary['score'])
-            predict = predict[0]
+            predict = predict[0]['boxes'].cpu().detach().numpy()[0]
 
+            return predict[0], predict[1], predict[2], predict[3]
         else:
             return None
 

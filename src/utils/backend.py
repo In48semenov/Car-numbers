@@ -10,7 +10,7 @@ class Inference:
 
     def __init__(self, detect_model: str = 'yolo', ocr_model: str = 'EasyOCR', type_inf: str = 'demonstration'):
         """
-            detect_model (str): yolo / mtcnn
+            detect_model (str): yolo / mtcnn / frcnn
             ocr_model (str): EasyOCR / EasyOCR_custom / lpr_custom
             type_inf (str): demonstration / production
         """

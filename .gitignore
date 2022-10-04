@@ -3,3 +3,4 @@
 .ipynb_checkpoints*/
 __pycache__*/
 Checker.ipynb
+src/weights/detect/FasterRCNN_v1_last.pth

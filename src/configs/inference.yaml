@@ -1,6 +1,7 @@
 detect_model:
   path_yolo: './src/weights/detect/yolov5_best.pt'
   path_mtcnn: ''
+  path_frcnn: './src/weights/detect/FasterRCNN_v1_last.pth'
 ocr_model:
   path_easy_custom: './src/weights/ocr/EasyOCR_custom.yaml.pth'
   path_lpr_custom: ''

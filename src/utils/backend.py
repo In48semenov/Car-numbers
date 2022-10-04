@@ -31,10 +31,10 @@ class Inference:
         self.type_inf = type_inf
 
     def _get_number(self, image: Image, detect_results: pandas):
-        self.xmin = detect_results.pandas().xyxy[0]['xmin'].iloc[0]
-        self.ymin = detect_results.pandas().xyxy[0]['ymin'].iloc[0]
-        self.xmax = detect_results.pandas().xyxy[0]['xmax'].iloc[0]
-        self.ymax = detect_results.pandas().xyxy[0]['ymax'].iloc[0]
+        self.xmin = detect_results[0]
+        self.ymin = detect_results[1]
+        self.xmax = detect_results[2]
+        self.ymax = detect_results[3]
 
         return np.asarray(image.crop((self.xmin, self.ymin, self.xmax, self.ymax)))
 
@@ -58,7 +58,7 @@ class Inference:
 
         detect_results = self.detect_model(image_orig)
 
-        if len(detect_results.pandas().xyxy) > 0:
+        if detect_results is not None:
             try:
                 img_number = self._get_number(image_orig, detect_results)
             except Exception:

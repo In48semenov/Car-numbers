@@ -2,7 +2,7 @@ import pandas
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
-from src.utils.detection_predict import YoloInference, MTCCNInference
+from src.utils.detection_predict import YoloInference, FasterRCNNInference, MTCCNInference
 from src.utils.ocr_predict import EasyOCRModel, EasyOCRCustom
 
 
@@ -10,13 +10,15 @@ class Inference:
 
     def __init__(self, detect_model: str = 'yolo', ocr_model: str = 'EasyOCR', type_inf: str = 'demonstration'):
         """
-            detect_model (str): yolo / mtcnn / frcnn
+            detect_model (str): yolo / frcnn / mtcnn
             ocr_model (str): EasyOCR / EasyOCR_custom / lpr_custom
             type_inf (str): demonstration / production
         """
 
         if detect_model == 'yolo':
             self.detect_model = YoloInference()
+        elif detect_model == 'frcnn':
+            self.detect_model = FasterRCNNInference()
         else:
             self.detect_model = MTCCNInference()
 

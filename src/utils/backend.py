@@ -20,6 +20,7 @@ class Inference:
         else:
             self.detect_model = MTCCNInference()
 
+
         if ocr_model == 'EasyOCR':
             self.ocr_model = EasyOCRModel()
         elif ocr_model == 'EasyOCR_custom':

@@ -1,4 +1,5 @@
 import torch
+from PIL import Image
 import yaml
 
 with open('./src/configs/inference.yaml') as file:
@@ -12,7 +13,7 @@ class YoloInference:
             'ultralytics/yolov5', 'custom', path=detect_model_path['path_yolo']
         )
 
-    def __call__(self, img: str):
+    def __call__(self, img: Image):
         results = self.model(img)
 
         return results

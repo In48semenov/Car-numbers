@@ -32,7 +32,7 @@ class YoloInference:
 class FasterRCNNInference:
 
     def __init__(self):
-        self.model = torch.load(detect_model_path=['path_frcnn'])
+        self.model = torch.load(detect_model_path['path_frcnn'])
         self.model.eval()
 
     @torch.no_grad()

@@ -2,8 +2,8 @@ import pandas
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
 
-from src.utils.detection_predict import YoloInference, FasterRCNNInference, MTCCNInference
-from src.utils.ocr_predict import EasyOCRModel, EasyOCRCustom
+from .detection import YoloInference, FasterRCNNInference, MTCCNInference
+from .ocr import EasyOCRModel, EasyOCRCustom
 
 
 class Inference:

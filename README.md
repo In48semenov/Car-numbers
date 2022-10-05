@@ -52,14 +52,20 @@ There is a strict interface for each of the parts. Each part is independent of t
 |EasyOCR(custom)|0.854|
 |LPRNEt|0.751|
 ## Performance 
+Specifications:
+* CPU: Intel i7-9750H (12) @ 2.600GHz 
+* GPU: NVIDIA GeForce GTX 1660 Ti Mobile
+
 **Plate detector**
-| Detector | Processing time  of one image |
+| Detector | Processing time  of one image (s) |
 |:--------:|-------------------------------|
 | frcnn    | 0.136                         |
 | mtcnn    | 0.096                         |
 | yolo     | 0.027                         |
+
+
 **Plate recognition**
-|    Detector    | Processing time  of one image |
+|    Detector    | Processing time  of one image (s) |
 |:--------------:|-------------------------------|
 | easyocr        | 0.046                         |
 | easyocr_custom | 0.027                         |

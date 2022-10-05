@@ -5,4 +5,6 @@ detect_model:
   path_frcnn: './src/weights/detect/FasterRCNN_v1_last.pth'
 ocr_model:
   path_easy_custom: './src/weights/ocr/EasyOCR_custom.yaml.pth'
-  path_lpr_custom: './src/weights/ocr/lprnet.pth'
+  path_lpr: './src/weights/ocr/lprnet.pth'
+transform_model:
+  path_stn: './src/weights/transform/stn.pth'

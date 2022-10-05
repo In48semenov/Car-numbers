@@ -123,7 +123,7 @@ class LPRNETInference:
         if device is None:
             self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-        lprnet_save_model_path = ocr_model_path["path_lpr_custom"]
+        lprnet_save_model_path = ocr_model_path["path_lpr"]
 
         self.lprnet = LPRNet(class_num=len(self.chars), dropout_rate=0.5)
         self.lprnet.to(self.device)

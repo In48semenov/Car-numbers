@@ -1,10 +1,12 @@
 from os.path import exists
 
-from PIL import Image, ImageDraw, ImageFont
+import cv2
 import numpy as np
+from PIL import Image, ImageDraw, ImageFont
 
 from .detection import YoloInference, FasterRCNNInference, MTCNNInference
 from .ocr import EasyOCRModel, EasyOCRCustom, LPRNETInference
+from .transform import STNetInference
 
 
 class Inference:
@@ -12,8 +14,9 @@ class Inference:
         self,
         detect_model: str = "yolo",
         ocr_model: str = "easyocr",
+        transform_model: str = None,
         plot: bool = True,
-        font_path: str = "./src/utils/fonts/NotoSans.ttc"
+        font_path: str = "./src/utils/fonts/NotoSans.ttc",
     ):
         """
         detect_model (str): yolo / frcnn / mtcnn
@@ -26,7 +29,7 @@ class Inference:
         elif detect_model == "mtcnn":
             self.detect_model = MTCNNInference()
         else:
-            raise ValueError('Given detect model not found')
+            raise ValueError("Given detect model not found")
 
         if ocr_model == "easyocr":
             self.ocr_model = EasyOCRModel()
@@ -35,13 +38,20 @@ class Inference:
         elif ocr_model == "lprnet":
             self.ocr_model = LPRNETInference()
         else:
-            raise ValueError('Given detect model not found')
+            raise ValueError("Given detect model not found")
+
+        if transform_model == "stnet":
+            self.transform_model = STNetInference()
+        elif transform_model is None:
+            self.transform_model = None
+        else:
+            raise ValueError("Given transform model not found")
 
         self.font_path = font_path
         self.plot = plot
 
     def _get_number(self, image: Image, bbox):
-        return np.asarray(image.crop((bbox[0], bbox[1], bbox[2], bbox[3])))
+        return image.crop((bbox[0], bbox[1], bbox[2], bbox[3]))
 
     def _demonstration(self, image: Image, bbox, text: str) -> Image:
         myFont = ImageFont.truetype(self.font_path, 24)
@@ -53,11 +63,8 @@ class Inference:
         draw.text((bbox[0], bbox[3]), text, fill=(255, 128, 0), font=myFont)
         return image
 
-    def __call__(self, path_to_image: str):
-        """
-        path_to_image (str): path to image
-        """
-        image_orig = Image.open(path_to_image)
+    def detect_by_image(self, image):
+        image_orig = image
         result_number = []
         vis_image = None
         if self.plot:
@@ -68,6 +75,9 @@ class Inference:
         for bbox in detect_results:
             img_number = self._get_number(image_orig, bbox)
 
+            if self.transform_model is not None:
+                img_number = self.transform_model(img_number)
+
             text_recognition = self.ocr_model(img_number)
             result_number.append(text_recognition)
             if self.plot:
@@ -76,3 +86,44 @@ class Inference:
                 vis_image = self._demonstration(vis_image, bbox, text_recognition)
 
         return result_number, vis_image
+
+    def detect_by_image_path(self, path_to_image: str):
+        image_orig = Image.open(path_to_image)
+        return self.detect_by_image(image_orig)
+
+    def detect_by_video_path(self, path_to_video, save_result_path):
+        vid_capture = cv2.VideoCapture(
+            "/content/drive/MyDrive/task/licence_plate/test_video.mp4"
+        )
+
+        width = int(vid_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+        height = int(vid_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        length = int(vid_capture.get(cv2.CAP_PROP_FRAME_COUNT))
+        fps = int(vid_capture.get(cv2.CAP_PROP_FPS))
+
+        print(fps, width, height)
+
+        output = cv2.VideoWriter(
+            save_result_path,
+            cv2.VideoWriter_fourcc("M", "J", "P", "G"),
+            fps,
+            (width, height),
+        )
+
+        while vid_capture.isOpened():
+            ret, frame = vid_capture.read()
+            if ret:
+                img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                pil_img = Image.fromarray(img)
+
+                result = self.detect_by_image(pil_img, debug=False)
+
+                open_cv_image = np.array(result)
+                open_cv_image = open_cv_image[:, :, ::-1].copy()
+
+                output.write(result)
+            else:
+                break
+
+        vid_capture.release()
+        output.release()

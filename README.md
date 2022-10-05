@@ -16,6 +16,26 @@ Our solution consists of three main parts:
 
 There is a strict interface for each of the parts. Each part is independent of the other. The final pipeline consists of the sequential application of each part.
 
+```
+.
+├── data
+├── notebooks               <- Jupyter notebooks
+├── README.md               <- The top-level README for developers using this project
+├── requirements.txt        <- The requirements file for reproducing the analysis environment
+├── result                  <- Empty folder for saving results
+├── src
+│   ├── configs             <- Folder that contains the parameters needed to run
+│   ├── models              <- Folder that contains the description of the model
+│   ├── predict
+│   │   ├── backend.py      <- Carplates recognition pipeline
+│   │   ├── detection.py    <- Implementations for number detection part
+│   │   ├── ocr.py          <- Implementations for OCR part
+│   │   └── transform.py    <- Implementations for transform part 
+│   ├── utils
+│   └── weights             <- Serialized models
+└── tutorial.ipynb          <- Demonstration work
+```
+
 # Results 
 **Plate detector**
 |Model|mAP 0.5|

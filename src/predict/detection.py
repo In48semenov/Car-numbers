@@ -16,10 +16,16 @@ with open("./src/configs/inference.yaml") as file:
 
 
 class YoloInference:
-    def __init__(self):
+    def __init__(self, device=None):
+        if device is None:
+            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        else:
+            self.device = device
+
         self.model = torch.hub.load(
             "ultralytics/yolov5", "custom", path=detect_model_path["path_yolo"]
         )
+        self.model.eval().to(self.device)
 
     def __call__(self, img: Image):
         results = self.model(img)
@@ -35,8 +41,14 @@ class YoloInference:
 
 
 class FasterRCNNInference:
-    def __init__(self):
+    def __init__(self, device=None):
+        if device is None:
+            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        else:
+            self.device = device
+
         self.model = torch.load(detect_model_path["path_frcnn"], map_location="cpu")
+        self.model.to(self.device)
         self.model.eval()
 
     def _get_bbox_with_max_score(self, predict):
@@ -50,7 +62,7 @@ class FasterRCNNInference:
     @torch.no_grad()
     def __call__(self, img: Image):
         img_tensor = transforms.ToTensor()(np.array(img))
-        predict = self.model([img_tensor.to("cpu")])
+        predict = self.model([img_tensor.to(self.device)])
 
         if len(predict[0]["boxes"].cpu().detach().numpy()) > 0:
             xmin, ymin, xmax, ymax = self._get_bbox_with_max_score(predict)
@@ -63,6 +75,7 @@ class MTCNNInference:
     def __init__(self, device=None):
         if device is None:
             device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
         pnet_model_path = detect_model_path["path_pnet"]
         onet_model_path = detect_model_path["path_onet"]
 

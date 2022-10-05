@@ -1,6 +1,8 @@
 from os.path import exists
 
 import cv2
+import time
+from debugpy import debug_this_thread
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
@@ -15,6 +17,7 @@ class Inference:
         detect_model: str = "yolo",
         ocr_model: str = "easyocr",
         transform_model: str = None,
+        debug: bool = False,
         plot: bool = True,
         font_path: str = "./src/utils/fonts/NotoSans.ttc",
     ):
@@ -49,6 +52,7 @@ class Inference:
 
         self.font_path = font_path
         self.plot = plot
+        self.debug = debug
 
         if transform_model is None:
             self.name_model = f"{detect_model}+{ocr_model}"
@@ -75,25 +79,34 @@ class Inference:
         if self.plot:
             vis_image = image_orig.copy()
 
+        stime_detect = time.time()
         detect_results = self.detect_model(image_orig)
+        ftime_detect = time.time()
 
-        if detect_results is None:
+        stime_ocr = time.time()
+        if detect_results is not None:
+            for bbox in detect_results:
+                img_number = np.asarray(self._get_number(image_orig, bbox))
+
+                if self.transform_model is not None:
+                    img_number = np.asarray(self.transform_model(img_number))
+
+                text_recognition = self.ocr_model(img_number)
+                result_number.append(text_recognition)
+                if self.plot:
+                    if text_recognition is None:
+                        text_recognition = "Не считано."
+                    vis_image = self._demonstration(vis_image, bbox, text_recognition)
+        ftime_ocr = time.time()
+
+        if self.debug:
+            debug_info = {
+                "detect_time": ftime_detect - stime_detect,
+                "ocr_time": ftime_ocr - stime_ocr,
+            }
+            return result_number, vis_image, debug_info
+        else:
             return result_number, vis_image
-
-        for bbox in detect_results:
-            img_number = np.asarray(self._get_number(image_orig, bbox))
-
-            if self.transform_model is not None:
-                img_number = np.asarray(self.transform_model(img_number))
-
-            text_recognition = self.ocr_model(img_number)
-            result_number.append(text_recognition)
-            if self.plot:
-                if text_recognition is None:
-                    text_recognition = "Не считано."
-                vis_image = self._demonstration(vis_image, bbox, text_recognition)
-
-        return result_number, vis_image
 
     def detect_by_image_path(self, path_to_image: str):
         image_orig = Image.open(path_to_image)

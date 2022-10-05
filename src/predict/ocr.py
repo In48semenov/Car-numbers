@@ -23,17 +23,25 @@ class EasyOCRModel:
         self,
         lang_list: list = ["ru", "en"],
         text_threshold: float = 0.3,
-        gpu: bool = False,
+        device=None,
         paragraph: bool = True,
         detail: int = 1,
         decoder: str = "greedy",
     ):
+        if device is None:
+            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        else:
+            self.device = device
+
+        use_gpu = False
+        if self.device.type == "cuda":
+            use_gpu = True
 
         self.text_threshold = text_threshold
         self.paragraph = paragraph
         self.detail = detail
         self.decoder = decoder
-        self.model = easyocr.Reader(lang_list=lang_list, gpu=gpu)
+        self.model = easyocr.Reader(lang_list=lang_list, gpu=use_gpu)
 
     def _infer(self, image: np) -> List[str]:
         """
@@ -61,9 +69,10 @@ class EasyOCRModel:
             str: Извлеченный текст из изображения
         """
 
-        prediction = self._infer(image)[0]
+        prediction = self._infer(image)
 
-        if len(prediction) > 0:
+        if len(prediction):
+            prediction = prediction[-1]
             prediction = re.sub(" ", "", prediction[-1])
             return prediction
         else:
@@ -71,11 +80,20 @@ class EasyOCRModel:
 
 
 class EasyOCRCustom:
-    def __init__(self):
+    def __init__(self, device=None):
+        if device is None:
+            self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        else:
+            self.device = device
+
+        use_gpu = False
+        if self.device.type == "cuda":
+            use_gpu = True
+
         with open("./src/configs/models/custom_easyocr.yaml") as file:
             inference_params = yaml.safe_load(file)
 
-        self.ocr_model = easyocr.Reader(**inference_params)
+        self.ocr_model = easyocr.Reader(**inference_params, gpu=use_gpu)
 
     def __call__(self, image: np) -> str:
         prediction = self.ocr_model.recognize(

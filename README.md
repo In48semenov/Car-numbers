@@ -37,6 +37,7 @@ There is a strict interface for each of the parts. Each part is independent of t
 ```
 
 # Results 
+## Metrics
 **Plate detector**
 |Model|mAP 0.5|
 |:------|:-------|
@@ -50,6 +51,20 @@ There is a strict interface for each of the parts. Each part is independent of t
 |EasyOCR(default)|0.003|
 |EasyOCR(custom)|0.854|
 |LPRNEt|0.751|
+## Performance 
+**Plate detector**
+| Detector | Processing time  of one image |
+|:--------:|-------------------------------|
+| frcnn    | 0.136                         |
+| mtcnn    | 0.096                         |
+| yolo     | 0.027                         |
+**Plate recognition**
+|    Detector    | Processing time  of one image |
+|:--------------:|-------------------------------|
+| easyocr        | 0.046                         |
+| easyocr_custom | 0.027                         |
+| lprnet         | 0.014                         |
+| stnet+lprnet   | 0.015                         |
 
 # Usage
 We tested three different detection models, three text recognition models and transform model.You can combine them however you like. Be  careful with experiments, look at the results.

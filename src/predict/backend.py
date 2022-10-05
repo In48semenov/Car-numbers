@@ -50,6 +50,11 @@ class Inference:
         self.font_path = font_path
         self.plot = plot
 
+        if transform_model is None:
+            self.name_model = f"{detect_model}+{ocr_model}"
+        else:
+            self.name_model = f"{detect_model}+{transform_model}+{ocr_model}"
+
     def _get_number(self, image: Image, bbox):
         return image.crop((bbox[0], bbox[1], bbox[2], bbox[3]))
 
@@ -72,11 +77,14 @@ class Inference:
 
         detect_results = self.detect_model(image_orig)
 
+        if detect_results is None:
+            return result_number, vis_image
+
         for bbox in detect_results:
-            img_number = self._get_number(image_orig, bbox)
+            img_number = np.asarray(self._get_number(image_orig, bbox))
 
             if self.transform_model is not None:
-                img_number = self.transform_model(img_number)
+                img_number = np.asarray(self.transform_model(img_number))
 
             text_recognition = self.ocr_model(img_number)
             result_number.append(text_recognition)
@@ -92,16 +100,11 @@ class Inference:
         return self.detect_by_image(image_orig)
 
     def detect_by_video_path(self, path_to_video, save_result_path):
-        vid_capture = cv2.VideoCapture(
-            "/content/drive/MyDrive/task/licence_plate/test_video.mp4"
-        )
+        vid_capture = cv2.VideoCapture(path_to_video)
 
         width = int(vid_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(vid_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        length = int(vid_capture.get(cv2.CAP_PROP_FRAME_COUNT))
         fps = int(vid_capture.get(cv2.CAP_PROP_FPS))
-
-        print(fps, width, height)
 
         output = cv2.VideoWriter(
             save_result_path,
@@ -116,12 +119,12 @@ class Inference:
                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 pil_img = Image.fromarray(img)
 
-                result = self.detect_by_image(pil_img, debug=False)
+                _, result = self.detect_by_image(pil_img)
 
                 open_cv_image = np.array(result)
                 open_cv_image = open_cv_image[:, :, ::-1].copy()
 
-                output.write(result)
+                output.write(open_cv_image)
             else:
                 break
 

@@ -54,6 +54,9 @@ class Inference:
         self.plot = plot
         self.debug = debug
 
+        self.name_detect_model = detect_model
+        self.name_ocr_model = ocr_model
+        self.name_transform_model = transform_model
         if transform_model is None:
             self.name_model = f"{detect_model}+{ocr_model}"
         else:

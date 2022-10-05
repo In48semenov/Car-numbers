@@ -30,7 +30,7 @@ class YoloInference:
     def __call__(self, img: Image):
         results = self.model(img)
 
-        if len(results.pandas().xyxy) > 0:
+        if len(results.pandas().xyxy) > 0 and (not results.pandas().xyxy[0].empty):
             xmin = results.pandas().xyxy[0]["xmin"].iloc[0]
             ymin = results.pandas().xyxy[0]["ymin"].iloc[0]
             xmax = results.pandas().xyxy[0]["xmax"].iloc[0]
@@ -56,17 +56,15 @@ class FasterRCNNInference:
         for value in predict:
             if max_score < value["scores"].cpu().detach().numpy()[0]:
                 bbox = value["boxes"].cpu().detach().numpy()[0]
-
         return [[bbox[0], bbox[1], bbox[2], bbox[3]]]
 
     @torch.no_grad()
     def __call__(self, img: Image):
         img_tensor = transforms.ToTensor()(np.array(img))
         predict = self.model([img_tensor.to(self.device)])
-
         if len(predict[0]["boxes"].cpu().detach().numpy()) > 0:
-            xmin, ymin, xmax, ymax = self._get_bbox_with_max_score(predict)
-            return [[xmin, ymin, xmax, ymax]]
+            bboxs = self._get_bbox_with_max_score(predict)
+            return bboxs
         else:
             return None
 

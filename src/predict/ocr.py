@@ -69,9 +69,10 @@ class EasyOCRModel:
             str: Извлеченный текст из изображения
         """
 
-        prediction = self._infer(image)[0]
+        prediction = self._infer(image)
 
-        if len(prediction) > 0:
+        if len(prediction):
+            prediction = prediction[-1]
             prediction = re.sub(" ", "", prediction[-1])
             return prediction
         else:

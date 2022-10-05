@@ -2,12 +2,11 @@
 **Detection of car numbers and their recognition**
 
 # Dataset
-We used [data](https://disk.yandex.ru/d/NANSgQklgRElog) from Kaggle [competition](https://www.kaggle.com/competitions/vkcv2022-contest-02-carplates/data).
-
+1. [Kaggle - VKCV_2022_Contest_02](https://www.kaggle.com/competitions/vkcv2022-contest-02-carplates/data)
+2. [Kaggle - Nomeroff Russian License plates](https://www.kaggle.com/datasets/evgrafovmaxim/nomeroff-russian-license-plates?select=autoriaNumberplateOcrRu-2021-09-01)
 # Pipeline
-![Pipeline](https://github.com/In48semenov/Car-numbers/blob/master/data/pipeline.png)
+![Pipeline](./data/pipeline.png)
 
- 
 
 # Results 
 **Plate detector**
@@ -32,3 +31,12 @@ First of all you need:**
 pip install -r requirements.txt 
 
 *Check tutorial.ipynb, file contains full guide.*
+
+# Reference 
+1. [MTCNN](https://arxiv.org/abs/1604.02878v1)
+1. [LPRNet](https://arxiv.org/abs/1806.10447)
+1. [Spatial Transformer Layer](https://arxiv.org/abs/1506.02025)
+1. [LPRNet_Pytorch](https://github.com/sirius-ai/LPRNet_Pytorch)
+1. [License Plate Detection Pytorch](https://github.com/xuexingyu24/License_Plate_Detection_Pytorch)
+1. [YOLO V5](https://github.com/ultralytics/yolov5)
+1. [Object Detection Metrics](https://github.com/rafaelpadilla/Object-Detection-Metrics)

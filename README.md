@@ -5,7 +5,7 @@
 1. [Kaggle - VKCV 2022 Contest_02](https://www.kaggle.com/competitions/vkcv2022-contest-02-carplates/data)
 2. [Kaggle - Nomeroff Russian License plates](https://www.kaggle.com/datasets/evgrafovmaxim/nomeroff-russian-license-plates?select=autoriaNumberplateOcrRu-2021-09-01)
 # Pipeline
-![Pipeline](./data/pipeline.png)
+![Pipeline](./data/pipeline_v2.png)
 
 # Project structure
 
@@ -39,7 +39,7 @@ To demonstrate the results of the pipeline, you can use a [tutorial.ipynb](./tut
 ```
 pip install -r requirements.txt 
 ```
-
+[Faster RCNN](https://drive.google.com/file/d/14nrZrry97JVd2AypwCQ6v_U5BYEbUGO3/view?usp=sharing) weights must be inserted into src/weights/detect/FasterRCNN_v1_last.pth
 
 # Reference 
 1. [MTCNN](https://arxiv.org/abs/1604.02878v1)

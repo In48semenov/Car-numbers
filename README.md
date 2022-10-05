@@ -2,7 +2,7 @@
 **Detection of car numbers and their recognition**
 
 # Pipeline
-![Pipeline](https://github.com/In48semenov/Car-numbers/blob/master/data/Pipeline.png)
+![Pipeline](https://github.com/In48semenov/Car-numbers/blob/master/data/pipeline.png)
 
 # Results 
 **Plate detector**

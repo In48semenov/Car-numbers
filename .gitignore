@@ -8,3 +8,5 @@ result/*
 !result/.gitkeep
 src/weights/detect/FasterRCNN_v1_last.pth
 data/val
+
+/src/weights/**

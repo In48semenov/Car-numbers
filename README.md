@@ -80,8 +80,15 @@ To demonstrate the results of the pipeline, you can use a [tutorial.ipynb](./tut
 ```
 pip install -r requirements.txt 
 ```
-[Faster RCNN](https://drive.google.com/file/d/14nrZrry97JVd2AypwCQ6v_U5BYEbUGO3/view?usp=sharing) weights must be inserted into src/weights/detect/FasterRCNN_v1_last.pth
 
+After installing the dependencies, you need to be in the **root folder** of the repository run commands:
+```
+# Linux command
+chmod +x load_data.sh
+./load_data.sh
+```
+
+[**Link**](https://drive.google.com/drive/folders/175r-xavYr0N_iv7QhI7fAFiYw1e-qqAh?usp=sharing) to the directory with all weights that are used in this work.
 # Reference 
 1. [MTCNN](https://arxiv.org/abs/1604.02878v1)
 1. [LPRNet](https://arxiv.org/abs/1806.10447)

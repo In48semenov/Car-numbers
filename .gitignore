@@ -9,4 +9,7 @@ result/*
 src/weights/detect/FasterRCNN_v1_last.pth
 data/val
 
-/src/weights/**
+/src/weights/*/**
+!/src/weights/detect/.gitkeep
+!/src/weights/ocr/.gitkeep
+!/src/weights/transform/.gitkeep

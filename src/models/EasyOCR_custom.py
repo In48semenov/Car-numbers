@@ -16,7 +16,7 @@ class BidirectionalLSTM(nn.Module):
         """
         try:  # multi gpu needs this
             self.rnn.flatten_parameters()
-        except:  # quantization doesn't work with this
+        except Exception as e:  # quantization doesn't work with this
             pass
         recurrent, _ = self.rnn(
             input
@@ -66,7 +66,9 @@ class VGG_FeatureExtractor(nn.Module):
 
 
 class ResNet_FeatureExtractor(nn.Module):
-    """FeatureExtractor of FAN (http://openaccess.thecvf.com/content_ICCV_2017/papers/Cheng_Focusing_Attention_Towards_ICCV_2017_paper.pdf)"""
+    """FeatureExtractor of FAN
+    (http://openaccess.thecvf.com/content_ICCV_2017/papers/
+            Cheng_Focusing_Attention_Towards_ICCV_2017_paper.pdf)"""
 
     def __init__(self, input_channel, output_channel=512):
         super(ResNet_FeatureExtractor, self).__init__()

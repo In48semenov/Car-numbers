@@ -68,10 +68,3 @@ class BoundingBoxes:
             else:  # if detection
                 image = add_bb_into_image(image, bb, color=(255, 0, 0))  # red
         return image
-
-    # def drawAllBoundingBoxes(self, image):
-    #     for gt in self.getBoundingBoxesByType(BBType.GroundTruth):
-    #         image = add_bb_into_image(image, gt ,color=(0,255,0))
-    #     for det in self.getBoundingBoxesByType(BBType.Detected):
-    #         image = add_bb_into_image(image, det ,color=(255,0,0))
-    #     return image

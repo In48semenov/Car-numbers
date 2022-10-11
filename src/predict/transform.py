@@ -1,7 +1,5 @@
 import yaml
 import numpy as np
-
-import cv2
 from PIL import Image
 
 import torch
@@ -24,7 +22,9 @@ class STNetInference:
         stn_save_model_path = transform_model_path["path_stn"]
 
         self.STN = STNet().to(self.device)
-        self.STN.load_state_dict(torch.load(stn_save_model_path, map_location=lambda storage, loc: storage))
+        self.STN.load_state_dict(
+            torch.load(stn_save_model_path, map_location=lambda storage, loc: storage)
+        )
         self.STN.eval()
 
     def __call__(self, image: np) -> str:

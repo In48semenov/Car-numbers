@@ -1,8 +1,5 @@
-from os.path import exists
-
 import cv2
 import time
-from debugpy import debug_this_thread
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 

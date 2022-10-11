@@ -236,8 +236,8 @@ class Evaluator:
             # Uncomment the following block to create plot with points #
             ############################################################
             # plt.plot(recall, precision, 'bo')
-            # labels = ['R', 'Y', 'J', 'A', 'U', 'C', 'M', 'F', 'D', 'B', 'H', 'P', 'E', 'X', 'N', 'T',
-            # 'K', 'Q', 'V', 'I', 'L', 'S', 'G', 'O']
+            # labels = ['R', 'Y', 'J', 'A', 'U', 'C', 'M', 'F', 'D', 'B', 'H', 'P', 'E', 'X',
+            # 'N', 'T', 'K', 'Q', 'V', 'I', 'L', 'S', 'G', 'O']
             # dicPosition = {}
             # dicPosition['left_zero'] = (-30,0)
             # dicPosition['left_zero_slight'] = (-30,-10)

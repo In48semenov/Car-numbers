@@ -1,7 +1,7 @@
 import re
-from typing import List
-import numpy as np
 import yaml
+import numpy as np
+from typing import List
 
 # EasyORCModel
 import easyocr
